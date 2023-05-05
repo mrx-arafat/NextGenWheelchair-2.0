@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <script>
+    function setMyKeyDownListener() {
+      window.addEventListener("keydown", function (event) {
+        MyFunction(event.key);
+      });
+    }
+
+  function MyFunction(the_Key) {
+// alert("Key pressed is: "+the_Key);
+    var pic, pic1;
+    switch (the_Key) {
+      case "ArrowUp":
+        pic1 = "images/arrow-up-active.png";
+        pic = pic1;
+        document.getElementById("ArrowUp").src = pic;
+        break;
+      case "ArrowDown":
+        pic1 = "images/arrow-down-active.png";
+        pic = pic1;
+        document.getElementById("ArrowDown").src = pic;
+        break;
+      case "ArrowLeft":
+        pic1 = "images/arrow-left-active.png";
+        pic = pic1;
+        document.getElementById("ArrowUp").src = pic;
+        break;
+      case "ArrowRight":
+        pic1 = "images/arrow-left-active.png";
+        pic = pic1;
+        document.getElementById("ArrowUp").src = pic;
+        break;
+
+      default:
+        pic = pic1;
+        break;
+    }
+    // document.getElementById("myImage").src = pic;
+  }
+
+  }
+  </script>
+
+  <body onload="setMyKeyDownListener()">
+    <img id="myImage" src="images/arrow-down.png" alt="arrow-down" />
+  </body>
+</html>

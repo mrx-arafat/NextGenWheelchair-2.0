@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voice to Text</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Voice to Text</h1>
+      <div class="row mt-4">
+        <div class="col text-center">
+          <button id="startButton" class="btn btn-primary">
+            Start Listening
+          </button>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col text-center">
+          <textarea
+            id="outputText"
+            class="form-control"
+            rows="6"
+            placeholder="Text will appear here..."
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const outputText = document.getElementById("outputText");
+        const startButton = document.getElementById("startButton");
+
+        if (annyang) {
+          // Define a command to be executed when the user speaks
+          const commands = {
+            "*text": function (text) {
+              outputText.value += text + " ";
+            },
+          };
+
+          // Add commands to annyang
+          annyang.addCommands(commands);
+
+          // Function to handle button state change
+          function toggleButtonState() {
+            if (startButton.textContent === "Start Listening") {
+              annyang.start();
+              startButton.textContent = "Stop Listening";
+            } else {
+              annyang.abort();
+              startButton.textContent = "Start Listening";
+            }
+          }
+
+          // Add click event listener to the startButton
+          startButton.addEventListener("click", toggleButtonState);
+        } else {
+          outputText.textContent =
+            "Your browser does not support the annyang library.";
+        }
+      });
+    </script>
+  </body>
+</html>

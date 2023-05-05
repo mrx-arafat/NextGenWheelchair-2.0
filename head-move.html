@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Head Motion Detection</title>
+  </head>
+  <body>
+    <h1>Head Motion Detection</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <input type="file" name="video" accept="video/*" required />
+      <button type="submit">Upload Video</button>
+    </form>
+    {% if motion_direction and motion_angle %}
+    <h2>Head Motion Information</h2>
+    <p><strong>Motion Direction:</strong> {{ motion_direction }}</p>
+    <p><strong>Motion Angle:</strong> {{ motion_angle }} degrees</p>
+    {% endif %}
+  </body>
+</html>

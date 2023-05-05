@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <title>Manual Control</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png" />
+    <!-- Pignose Calender -->
+    <link
+      href="./plugins/pg-calendar/css/pignose.calendar.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css" />
+    <link
+      rel="stylesheet"
+      href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css"
+    />
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+
+  <body onload="setMyKeyDownListener()">
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle
+            class="path"
+            cx="50"
+            cy="50"
+            r="20"
+            fill="none"
+            stroke-width="3"
+            stroke-miterlimit="10"
+          />
+        </svg>
+      </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+      <!--**********************************
+            Nav header start
+        ***********************************-->
+      <div class="nav-header">
+        <div class="brand-logo">
+          <a href="index.html">
+            <b class="logo-abbr"><img src="images/logo.png" alt="" /> </b>
+            <span class="logo-compact"
+              ><img src="./images/logo-compact.png" alt=""
+            /></span>
+            <span class="brand-title">
+              <img src="images/logo-text.png" alt="" />
+            </span>
+          </a>
+        </div>
+      </div>
+      <!--**********************************
+            Nav header end
+        ***********************************-->
+
+      <!--**********************************
+            Header start
+        ***********************************-->
+      <div class="header">
+        <div class="header-content clearfix">
+          <div class="nav-control">
+            <div class="hamburger">
+              <span class="toggle-icon"><i class="icon-menu"></i></span>
+            </div>
+          </div>
+          <!-- <div class="header-left">
+            <div class="input-group icons">
+              <div class="input-group-prepend">
+                <span
+                  class="input-group-text bg-transparent border-0 pr-2 pr-sm-3"
+                  id="basic-addon1"
+                  ><i class="mdi mdi-magnify"></i
+                ></span>
+              </div>
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search Dashboard"
+                aria-label="Search Dashboard"
+              />
+              <div class="drop-down animated flipInX d-md-none">
+                <form action="#">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search"
+                  />
+                </form>
+              </div>
+            </div>
+          </div> -->
+          <div class="header-right">
+            <ul class="clearfix">
+              <li class="icons">
+                <a>
+                  <!-- <i class="mdi mdi-email-outline"></i> -->
+                  <img
+                    src="images/battery-full.png"
+                    alt=""
+                    style="height: 30px"
+                  />
+                  <!-- <span class="badge badge-pill gradient-1">3</span> -->
+                </a>
+              </li>
+              <li class="icons dropdown">
+                <a>
+                  <!-- <i class="mdi mdi-bell-outline"></i> -->
+                  <img
+                    src="images/attention-full.png"
+                    alt=""
+                    style="height: 40px"
+                  />
+                </a>
+              </li>
+              <!-- <li class="icons dropdown d-none d-md-flex">
+                <a
+                  href="javascript:void(0)"
+                  class="log-user"
+                  data-toggle="dropdown"
+                >
+                  <span>English</span>
+                  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                </a>
+                <div
+                  class="drop-down dropdown-language animated fadeIn dropdown-menu"
+                >
+                  <div class="dropdown-content-body">
+                    <ul>
+                      <li><a href="javascript:void()">English</a></li>
+                      <li><a href="javascript:void()">Dutch</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li> -->
+
+              <li class="icons dropdown">
+                <div
+                  class="user-img c-pointer position-relative"
+                  data-toggle="dropdown"
+                >
+                  <!-- <span class="activity active"></span> -->
+                  <span class=""></span>
+                  <img src="images/user/1.png" height="40" width="40" alt="" />
+                </div>
+                <div
+                  class="drop-down dropdown-profile animated fadeIn dropdown-menu"
+                >
+                  <div class="dropdown-content-body">
+                    <ul>
+                      <li>
+                        <a href="app-profile.html"
+                          ><i class="icon-user"></i> <span>Profile</span></a
+                        >
+                      </li>
+                      <!-- <li>
+                        <a href="javascript:void()">
+                          <i class="icon-envelope-open"></i> <span>Inbox</span>
+                          <div class="badge gradient-3 badge-pill gradient-1">
+                            3
+                          </div>
+                        </a>
+                      </li>
+
+                      <hr class="my-2" />
+                      <li>
+                        <a href="page-lock.html"
+                          ><i class="icon-lock"></i> <span>Lock Screen</span></a
+                        >
+                      </li> -->
+                      <li>
+                        <a href="page-login.html"
+                          ><i class="icon-key"></i> <span>Logout</span></a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+      <!--**********************************
+            Sidebar start
+        ***********************************-->
+      <div class="nk-sidebar">
+        <div class="nk-nav-scroll">
+          <ul class="metismenu" id="menu">
+            <!-- <li class="nav-label">Dashboard</li> -->
+            <li>
+              <a class="" href="system-status.html" aria-expanded="false">
+                <i class="icon-speedometer menu-icon"></i
+                ><span class="nav-text">System Information</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="has-arrow"
+                href="javascript:void()"
+                aria-expanded="false"
+              >
+                <!-- <i class="icon-globe-alt menu-icon"></i> -->
+                <i class="bi bi-dpad"></i>
+
+                <span class="nav-text">Controls</span>
+              </a>
+              <ul aria-expanded="false">
+                <li><a href="./control-eeg.html">EEG</a></li>
+                <li><a href="./control-voice.html">Voice</a></li>
+                <li><a href="./control-manual.html">Manual</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="" href="page-login.html" aria-expanded="false">
+                <i class="bi bi-box-arrow-left"></i>
+                <span class="nav-text">Sign Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+      <!--**********************************
+            Content body start
+        ***********************************-->
+      <div class="content-body">
+        <!-- #/ container -->
+        <div class="container-fluid mt-3">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-8">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">EEG Module</h3>
+                      <!-- <h5 class="card-widget__subtitle">EEG Module</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">
+                        Wheelchair Functionality
+                      </h3>
+                      <!-- <h5 class="card-widget__subtitle">Open Tickets</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">Voice Command</h3>
+                      <!-- <h5 class="card-widget__subtitle">Task Completed</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">Joystick Control</h3>
+                      <!-- <h5 class="card-widget__subtitle">Task Completed</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Press any arrow key to control</h4>
+                  <!-- <div class="bootstrap-carousel"> -->
+                  <!-- <div class="carousel slide" data-ride="carousel"> -->
+                  <div class="carousel-inner">
+                    <!-- <div class="carousel-item active" style="text-align: left;">
+                      <img
+                        class="w-50"
+                        src="images/eegplot2.png"
+                        alt=""
+                      />
+                    </div> -->
+
+                    <!-- <script>
+
+                      var myGamePiece;
+                      
+                      function startGame() {
+                          myGamePiece = new component(30, 30, "red", 10, 120);
+                          myGameArea.start();
+                      }
+                      
+                      var myGameArea = {
+                          canvas : document.createElement("canvas"),
+                          start : function() {
+                              this.canvas.width = 480;
+                              this.canvas.height = 270;
+                              this.context = this.canvas.getContext("2d");
+                              document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                              this.interval = setInterval(updateGameArea, 20);
+                          },
+                          clear : function() {
+                              this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                          }
+                      }
+                      
+                      function component(width, height, color, x, y) {
+                          this.width = width;
+                          this.height = height;
+                          this.speedX = 0;
+                          this.speedY = 0;
+                          this.x = x;
+                          this.y = y;    
+                          this.update = function() {
+                              ctx = myGameArea.context;
+                              ctx.fillStyle = color;
+                              ctx.fillRect(this.x, this.y, this.width, this.height);
+                          }
+                          this.newPos = function() {
+                              this.x += this.speedX;
+                              this.y += this.speedY;        
+                          }    
+                      }
+                      
+                      function updateGameArea() {
+                          myGameArea.clear();
+                          myGamePiece.newPos();    
+                          myGamePiece.update();
+                      }
+                      
+                      function moveup() {
+                          myGamePiece.speedY = -1; 
+                      }
+                      
+                      function movedown() {
+                          myGamePiece.speedY = 1; 
+                      }
+                      
+                      function moveleft() {
+                          myGamePiece.speedX = -1; 
+                      }
+                      
+                      function moveright() {
+                          myGamePiece.speedX = 1; 
+                      }
+                      
+                      function clearmove() {
+                          myGamePiece.speedX = 0; 
+                          myGamePiece.speedY = 0; 
+                      }
+                      </script> -->
+                    <div style="text-align: center; width: 480px">
+                      <button>
+                        <img
+                          id="ArrUp"
+                          class="w-50"
+                          src="images/arrow-up.png"
+                          alt=""
+                        /></button
+                      ><br /><br />
+                      <button>
+                        <img
+                          id="ArrLeft"
+                          class="w-50"
+                          src="images/arrow-left.png"
+                          alt=""
+                        />
+                      </button>
+                      <button>
+                        <img
+                          id="ArrRight"
+                          class="w-50"
+                          src="images/arrow-right.png"
+                          alt=""
+                        /></button
+                      ><br /><br />
+                      <button>
+                        <img
+                          id="ArrDown"
+                          class="w-50"
+                          src="images/arrow-down.png"
+                          alt=""
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--**********************************
+            Content body end
+        ***********************************-->
+
+    <!--**********************************
+            Footer start
+        ***********************************-->
+    <div class="footer">
+      <div class="copyright">
+        <p>
+          Copyright &copy; Designed & Developed by
+          <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018
+        </p>
+      </div>
+    </div>
+    <!--**********************************
+            Footer end
+        ***********************************-->
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="js/arrow.js"></script>
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+  </body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- theme meta -->
+    <meta name="theme-name" content="quixlab" />
+
+    <title>Manual Control</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png" />
+    <!-- Pignose Calender -->
+    <link
+      href="./plugins/pg-calendar/css/pignose.calendar.min.css"
+      rel="stylesheet"
+    />
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css" />
+    <link
+      rel="stylesheet"
+      href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css"
+    />
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+
+  <body onload="setMyKeyDownListener()">
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+      <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+          <circle
+            class="path"
+            cx="50"
+            cy="50"
+            r="20"
+            fill="none"
+            stroke-width="3"
+            stroke-miterlimit="10"
+          />
+        </svg>
+      </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+      <!--**********************************
+            Nav header start
+        ***********************************-->
+      <div class="nav-header">
+        <div class="brand-logo">
+          <a href="index.html">
+            <b class="logo-abbr"><img src="images/logo.png" alt="" /> </b>
+            <span class="logo-compact"
+              ><img src="./images/logo-compact.png" alt=""
+            /></span>
+            <span class="brand-title">
+              <img src="images/logo-text.png" alt="" />
+            </span>
+          </a>
+        </div>
+      </div>
+      <!--**********************************
+            Nav header end
+        ***********************************-->
+
+      <!--**********************************
+            Header start
+        ***********************************-->
+      <div class="header">
+        <div class="header-content clearfix">
+          <div class="nav-control">
+            <div class="hamburger">
+              <span class="toggle-icon"><i class="icon-menu"></i></span>
+            </div>
+          </div>
+          <!-- <div class="header-left">
+            <div class="input-group icons">
+              <div class="input-group-prepend">
+                <span
+                  class="input-group-text bg-transparent border-0 pr-2 pr-sm-3"
+                  id="basic-addon1"
+                  ><i class="mdi mdi-magnify"></i
+                ></span>
+              </div>
+              <input
+                type="search"
+                class="form-control"
+                placeholder="Search Dashboard"
+                aria-label="Search Dashboard"
+              />
+              <div class="drop-down animated flipInX d-md-none">
+                <form action="#">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search"
+                  />
+                </form>
+              </div>
+            </div>
+          </div> -->
+          <div class="header-right">
+            <ul class="clearfix">
+              <li class="icons">
+                <a>
+                  <!-- <i class="mdi mdi-email-outline"></i> -->
+                  <img
+                    src="images/battery-full.png"
+                    alt=""
+                    style="height: 30px"
+                  />
+                  <!-- <span class="badge badge-pill gradient-1">3</span> -->
+                </a>
+              </li>
+              <li class="icons dropdown">
+                <a>
+                  <!-- <i class="mdi mdi-bell-outline"></i> -->
+                  <img
+                    src="images/attention-full.png"
+                    alt=""
+                    style="height: 40px"
+                  />
+                </a>
+              </li>
+              <!-- <li class="icons dropdown d-none d-md-flex">
+                <a
+                  href="javascript:void(0)"
+                  class="log-user"
+                  data-toggle="dropdown"
+                >
+                  <span>English</span>
+                  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                </a>
+                <div
+                  class="drop-down dropdown-language animated fadeIn dropdown-menu"
+                >
+                  <div class="dropdown-content-body">
+                    <ul>
+                      <li><a href="javascript:void()">English</a></li>
+                      <li><a href="javascript:void()">Dutch</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </li> -->
+
+              <li class="icons dropdown">
+                <div
+                  class="user-img c-pointer position-relative"
+                  data-toggle="dropdown"
+                >
+                  <!-- <span class="activity active"></span> -->
+                  <span class=""></span>
+                  <img src="images/user/1.png" height="40" width="40" alt="" />
+                </div>
+                <div
+                  class="drop-down dropdown-profile animated fadeIn dropdown-menu"
+                >
+                  <div class="dropdown-content-body">
+                    <ul>
+                      <li>
+                        <a href="app-profile.html"
+                          ><i class="icon-user"></i> <span>Profile</span></a
+                        >
+                      </li>
+                      <!-- <li>
+                        <a href="javascript:void()">
+                          <i class="icon-envelope-open"></i> <span>Inbox</span>
+                          <div class="badge gradient-3 badge-pill gradient-1">
+                            3
+                          </div>
+                        </a>
+                      </li>
+
+                      <hr class="my-2" />
+                      <li>
+                        <a href="page-lock.html"
+                          ><i class="icon-lock"></i> <span>Lock Screen</span></a
+                        >
+                      </li> -->
+                      <li>
+                        <a href="page-login.html"
+                          ><i class="icon-key"></i> <span>Logout</span></a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+      <!--**********************************
+            Sidebar start
+        ***********************************-->
+      <div class="nk-sidebar">
+        <div class="nk-nav-scroll">
+          <ul class="metismenu" id="menu">
+            <!-- <li class="nav-label">Dashboard</li> -->
+            <li>
+              <a class="" href="system-status.html" aria-expanded="false">
+                <i class="icon-speedometer menu-icon"></i
+                ><span class="nav-text">System Information</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="has-arrow"
+                href="javascript:void()"
+                aria-expanded="false"
+              >
+                <!-- <i class="icon-globe-alt menu-icon"></i> -->
+                <i class="bi bi-dpad"></i>
+
+                <span class="nav-text">Controls</span>
+              </a>
+              <ul aria-expanded="false">
+                <li><a href="./control-eeg.html">EEG</a></li>
+                <li><a href="./control-voice.html">Voice</a></li>
+                <li><a href="./control-manual.html">Manual</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="" href="page-login.html" aria-expanded="false">
+                <i class="bi bi-box-arrow-left"></i>
+                <span class="nav-text">Sign Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+      <!--**********************************
+            Content body start
+        ***********************************-->
+      <div class="content-body">
+        <!-- #/ container -->
+        <div class="container-fluid mt-3">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-8">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">EEG Module</h3>
+                      <!-- <h5 class="card-widget__subtitle">EEG Module</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">
+                        Wheelchair Functionality
+                      </h3>
+                      <!-- <h5 class="card-widget__subtitle">Open Tickets</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">Voice Command</h3>
+                      <!-- <h5 class="card-widget__subtitle">Task Completed</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-xs-12">
+              <div class="card card-widget">
+                <div class="card-body gradient-2">
+                  <div class="media">
+                    <span class="card-widget__icon"
+                      ><i class="bi bi-check"></i
+                    ></span>
+                    <div class="media-body">
+                      <h3 class="card-widget__title">Joystick Control</h3>
+                      <!-- <h5 class="card-widget__subtitle">Task Completed</h5> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Press any arrow key to control</h4>
+                  <!-- <div class="bootstrap-carousel"> -->
+                  <!-- <div class="carousel slide" data-ride="carousel"> -->
+                  <div class="carousel-inner">
+                    <!-- <div class="carousel-item active" style="text-align: left;">
+                      <img
+                        class="w-50"
+                        src="images/eegplot2.png"
+                        alt=""
+                      />
+                    </div> -->
+
+                    <!-- <script>
+
+                      var myGamePiece;
+                      
+                      function startGame() {
+                          myGamePiece = new component(30, 30, "red", 10, 120);
+                          myGameArea.start();
+                      }
+                      
+                      var myGameArea = {
+                          canvas : document.createElement("canvas"),
+                          start : function() {
+                              this.canvas.width = 480;
+                              this.canvas.height = 270;
+                              this.context = this.canvas.getContext("2d");
+                              document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                              this.interval = setInterval(updateGameArea, 20);
+                          },
+                          clear : function() {
+                              this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                          }
+                      }
+                      
+                      function component(width, height, color, x, y) {
+                          this.width = width;
+                          this.height = height;
+                          this.speedX = 0;
+                          this.speedY = 0;
+                          this.x = x;
+                          this.y = y;    
+                          this.update = function() {
+                              ctx = myGameArea.context;
+                              ctx.fillStyle = color;
+                              ctx.fillRect(this.x, this.y, this.width, this.height);
+                          }
+                          this.newPos = function() {
+                              this.x += this.speedX;
+                              this.y += this.speedY;        
+                          }    
+                      }
+                      
+                      function updateGameArea() {
+                          myGameArea.clear();
+                          myGamePiece.newPos();    
+                          myGamePiece.update();
+                      }
+                      
+                      function moveup() {
+                          myGamePiece.speedY = -1; 
+                      }
+                      
+                      function movedown() {
+                          myGamePiece.speedY = 1; 
+                      }
+                      
+                      function moveleft() {
+                          myGamePiece.speedX = -1; 
+                      }
+                      
+                      function moveright() {
+                          myGamePiece.speedX = 1; 
+                      }
+                      
+                      function clearmove() {
+                          myGamePiece.speedX = 0; 
+                          myGamePiece.speedY = 0; 
+                      }
+                      </script> -->
+                    <div style="text-align: center; width: 480px">
+                      <button>
+                        <img
+                          id="ArrUp"
+                          class="w-50"
+                          src="images/arrow-up.png"
+                          alt=""
+                        /></button
+                      ><br /><br />
+                      <button>
+                        <img
+                          id="ArrLeft"
+                          class="w-50"
+                          src="images/arrow-left.png"
+                          alt=""
+                        />
+                      </button>
+                      <button>
+                        <img
+                          id="ArrRight"
+                          class="w-50"
+                          src="images/arrow-right.png"
+                          alt=""
+                        /></button
+                      ><br /><br />
+                      <button>
+                        <img
+                          id="ArrDown"
+                          class="w-50"
+                          src="images/arrow-down.png"
+                          alt=""
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--**********************************
+            Content body end
+        ***********************************-->
+
+    <!--**********************************
+            Footer start
+        ***********************************-->
+    <div class="footer">
+      <div class="copyright">
+        <p>
+          Copyright &copy; Designed & Developed by
+          <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018
+        </p>
+      </div>
+    </div>
+    <!--**********************************
+            Footer end
+        ***********************************-->
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="js/arrow.js"></script>
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+  </body>
+</html>

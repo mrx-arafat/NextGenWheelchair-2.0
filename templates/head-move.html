@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-time Feedback with Head Motion</title>
+    <!-- Add Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h1>Real-time Feedback with Head Motion</h1>
+          <div class="card">
+            <div class="card-body position-relative">
+              <video
+                id="webcam"
+                width="640"
+                height="480"
+                autoplay
+                muted
+              ></video>
+              <canvas id="overlay" width="640" height="480"></canvas>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button id="startWebcam" class="btn btn-primary">
+              Start Webcam
+            </button>
+            <button id="pauseResume" class="btn btn-secondary">Pause</button>
+          </div>
+          <div class="card mt-3">
+            <div class="card-body">
+              <h5 class="card-title">Head Motion Information</h5>
+              <p id="motionDirection" class="card-text">
+                Motion Direction: N/A
+              </p>
+              <p id="motionAngle" class="card-text">Motion Angle: N/A</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.getElementById("pauseResume").addEventListener("click", () => {
+        video.paused ? video.play() : video.pause();
+      });
+
+      async function sendFrameToServer(frame) {
+        const response = await fetch("/process_frame", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `image=${encodeURIComponent(frame)}`,
+        });
+        const data = await response.json();
+        return data;
+      }
+
+      async function captureAndSendFrame() {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        const frame = canvas.toDataURL("image/jpeg", 0.7).split(",")[1];
+        const results = await sendFrameToServer(frame);
+
+        document.getElementById(
+          "motionDirection"
+        ).innerText = `Motion Direction: ${results.motion_direction}`;
+        document.getElementById(
+          "motionAngle"
+        ).innerText = `Motion Angle: ${results.motion_angle}`;
+      }
+
+      document.getElementById("startWebcam").addEventListener("click", () => {
+        setInterval(captureAndSendFrame, 100); // Capture a frame every 100ms (10fps)
+      });
+
+      // Start webcam
+      const video = document.getElementById("webcam");
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
+        video.srcObject = stream;
+      });
+    </script>
+    <!-- Add Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>
