@@ -20,7 +20,7 @@
     <div id="joystickContainer"></div>
     <script>
       // Create a WebSocket connection to the ESP32
-      const websocket = new WebSocket("ws://192.168.68.201:80");
+      const websocket = new WebSocket("ws://192.168.0.201:81");
 
       // Replace with the actual IP address of your ESP32
 
@@ -55,8 +55,8 @@
           const y = data.force * Math.sin(angleInRadians);
 
           // Map x and y to a range of 0 to 255 with the middle point (128,128)
-          const mappedX = mapValue(x, -1, 1, 0, 255) / 2 + 128;
-          const mappedY = mapValue(y, -1, 1, 0, 255) / 2 + 128;
+          const mappedX = mapValue(x, -1, 1, 0, 4095) / 2 + 2048;
+          const mappedY = mapValue(y, -1, 1, 0, 4095) / 2 + 2048;
 
           output.innerHTML = `X: ${mappedX.toFixed(0)}, Y: ${mappedY.toFixed(
             0
