@@ -46,17 +46,17 @@
         });
 
         manager.on("end", function () {
-          output.innerHTML = "";
+          output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
         });
 
         function displayCommand(data) {
           const angleInRadians = (data.angle.degree * Math.PI) / 180;
-          const x = data.force * Math.cos(angleInRadians);
-          const y = data.force * Math.sin(angleInRadians);
+          const x = Math.cos(angleInRadians);
+          const y = Math.sin(angleInRadians);
 
           // Map x and y to a range of 0 to 255 with the middle point (128,128)
-          const mappedX = mapValue(x, -1, 1, 0, 4095) / 2 + 2048;
-          const mappedY = mapValue(y, -1, 1, 0, 4095) / 2 + 2048;
+          const mappedX = mapValue(x, -1, 1, 0, 4095);
+          const mappedY = mapValue(y, -1, 1, 0, 4095);
 
           output.innerHTML = `X: ${mappedX.toFixed(0)}, Y: ${mappedY.toFixed(
             0
@@ -71,15 +71,12 @@
             degree: data.angle.degree.toFixed(2),
             force: data.force.toFixed(2),
           };
-
-          // Send the JSON object as a string to the ESP32 over the WebSocket connection
-          websocket.send(JSON.stringify(commandData));
+          let billi = JSON.stringify(commandData);
+          websocket.send(billi);
         }
 
         function mapValue(value, inMin, inMax, outMin, outMax) {
-          return (
-            ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
-          );
+          return ((value - inMin) * (outMax - outMin)) / (inMax - inMin);
         }
 
         // Add keyboard support
