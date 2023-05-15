@@ -380,8 +380,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Add nipplejs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.8.0/nipplejs.min.js"></script>
+
     <script>
-      // Add custom JavaScript code
       $(document).ready(function () {
         const joystickContainer = document.getElementById("joystickContainer");
         const output = document.createElement("div");
@@ -430,10 +430,13 @@
             degree = 90;
           } else if (e.key === "ArrowDown") {
             degree = 270;
+            e.preventDefault(); // prevent page from scrolling
           } else if (e.key === "ArrowLeft") {
             degree = 180;
+            e.preventDefault(); // prevent page from scrolling
           } else if (e.key === "ArrowRight") {
             degree = 0;
+            e.preventDefault(); // prevent page from scrolling
           }
           if (degree !== null) {
             const data = {
@@ -451,6 +454,7 @@
             ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
           ) {
             output.innerHTML = "";
+            document.activeElement.blur(); // remove focus from the arrow
           }
         });
       });
