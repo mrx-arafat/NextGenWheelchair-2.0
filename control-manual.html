@@ -302,6 +302,7 @@
 
                   <div class="container">
                     <div class="mt-3" id="joystickContainer"></div>
+                    <div id="serverData"></div>
                   </div>
 
                   <div style="text-align: center; width: 100%" class="mb-5">
@@ -380,8 +381,18 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Add nipplejs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.8.0/nipplejs.min.js"></script>
-
     <script>
+      // Create a WebSocket connection to the ESP32
+      const websocket = new WebSocket("ws://192.168.0.201:81");
+
+      // Add an event listener for WebSocket messages.
+      websocket.onmessage = function (event) {
+        document.getElementById("serverData").innerText = event.data;
+      };
+
+      let activeJoystickData = null;
+      let joystickIsActive = false;
+
       $(document).ready(function () {
         const joystickContainer = document.getElementById("joystickContainer");
         const output = document.createElement("div");
@@ -399,28 +410,48 @@
         };
 
         const manager = nipplejs.create(joystickOptions);
+
         manager.on("move", function (event, data) {
           displayCommand(data);
+          activeJoystickData = data; // Save the current data
+          joystickIsActive = true; // Joystick is active
         });
 
         manager.on("end", function () {
-          output.innerHTML = "";
+          // output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
+          joystickIsActive = false; // Joystick is not active
         });
 
         function displayCommand(data) {
-          let command = "";
-          if (data.angle.degree >= 45 && data.angle.degree < 135) {
-            command = "Up";
-          } else if (data.angle.degree >= 135 && data.angle.degree < 225) {
-            command = "Left";
-          } else if (data.angle.degree >= 225 && data.angle.degree < 315) {
-            command = "Down";
-          } else {
-            command = "Right";
-          }
-          output.innerHTML = `Direction: ${command}, Degree: ${data.angle.degree.toFixed(
+          const angleInRadians = (data.angle.degree * Math.PI) / 180;
+          const x = Math.cos(angleInRadians);
+          const y = Math.sin(angleInRadians);
+
+          // Map x and y to a range of 0 to 255 with the middle point (128,128)
+          const mappedX = mapValue(x, -1, 1, 0, 4095);
+          const mappedY = mapValue(y, -1, 1, 0, 4095);
+
+          output.innerHTML = `X: ${mappedX.toFixed(0)}, Y: ${mappedY.toFixed(
+            0
+          )}, Degree: ${data.angle.degree.toFixed(
             2
           )}, Force: ${data.force.toFixed(2)}`;
+
+          // Create a JSON object with the mapped x, y, degree, and force
+          const commandData = {
+            x: mappedX.toFixed(0),
+            y: mappedY.toFixed(0),
+            degree: data.angle.degree.toFixed(2),
+            force: data.force.toFixed(2),
+          };
+          let commandJson = JSON.stringify(commandData);
+          websocket.send(commandJson);
+        }
+
+        function mapValue(value, inMin, inMax, outMin, outMax) {
+          return (
+            ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
+          );
         }
 
         // Add keyboard support
@@ -430,13 +461,10 @@
             degree = 90;
           } else if (e.key === "ArrowDown") {
             degree = 270;
-            e.preventDefault(); // prevent page from scrolling
           } else if (e.key === "ArrowLeft") {
             degree = 180;
-            e.preventDefault(); // prevent page from scrolling
           } else if (e.key === "ArrowRight") {
             degree = 0;
-            e.preventDefault(); // prevent page from scrolling
           }
           if (degree !== null) {
             const data = {
@@ -453,10 +481,16 @@
           if (
             ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
           ) {
-            output.innerHTML = "";
-            document.activeElement.blur(); // remove focus from the arrow
+            output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
+            joystickIsActive = false; // Joystick is not active
           }
         });
+
+        setInterval(function () {
+          if (joystickIsActive && activeJoystickData) {
+            displayCommand(activeJoystickData);
+          }
+        }, 100);
       });
     </script>
 
