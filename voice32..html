@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button onclick="startDictation()">Start dictation</button>
+    <div id="transcript"></div>
+
+    <script>
+      // Create a WebSocket connection to the ESP32
+      const websocket = new WebSocket("ws://192.168.0.201:81");
+
+      function startDictation() {
+        if (window.hasOwnProperty("webkitSpeechRecognition")) {
+          var recognition = new webkitSpeechRecognition();
+
+          // Define the specific commands to recognize
+          var commands =
+            "#JSGF V1.0; grammar commands; public <command> = move right | move left | move forward | move back | stop | start ;";
+          var speechRecognitionList = new webkitSpeechGrammarList();
+          speechRecognitionList.addFromString(commands, 1);
+          recognition.grammars = speechRecognitionList;
+
+          recognition.continuous = false;
+          recognition.interimResults = false;
+          recognition.lang = "en-US";
+          recognition.start();
+
+          recognition.onresult = function (e) {
+            let transcript = e.results[0][0].transcript;
+            document.getElementById("transcript").innerHTML = transcript;
+            recognition.stop();
+
+            // Send the recognized command to the WebSocket
+            sendMessage(transcript);
+          };
+
+          recognition.onerror = function (e) {
+            recognition.stop();
+          };
+        }
+      }
+
+      function sendMessage(message) {
+        // Create a JSON object with the command
+        const commandData = {
+          command: message,
+        };
+        let commandJson = JSON.stringify(commandData);
+        websocket.send(commandJson);
+      }
+    </script>
+  </body>
+</html>
