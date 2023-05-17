@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Control Voice</title>
+  </head>
+  <body>
+    <h1>Control Voice</h1>
+    <button onclick="startListening()">Start Listening</button>
+    <button onclick="stopListening()">Stop Listening</button>
+    <p id="result"></p>
+
+    <script>
+      // Connect to WebSocket server
+      const ws = new WebSocket("ws://192.168.0.201:81");
+      console.log("Connected to WebSocket server");
+
+      ws.onopen = function() {
+        console.log("WebSocket connection established");
+      };
+
+      ws.onmessage = function(event) {
+        console.log("Received: " + event.data);
+      };
+
+      let recognition;
+
+      function startListening() {
+        // Check browser support for the Web Speech API
+        if (!("webkitSpeechRecognition" in window)) {
+          console.log("Speech recognition not supported in this browser");
+          return;
+        }
+
+        // Create a new SpeechRecognition instance
+        recognition = new webkitSpeechRecognition();
+
+        // Set the language for speech recognition (e.g., "en-US" for English-US)
+        recognition.lang = "en-US";
+
+        // Define the event handlers for recognition
+        recognition.onstart = function() {
+          console.log("Speech recognition started");
+        };
+
+        recognition.onresult = function(event) {
+          const speechResult = event.results[0][0].transcript;
+
+          // Display the speech result
+          const resultElement = document.getElementById("result");
+          resultElement.innerHTML = speechResult;
+
+          // Send speechResult to the WebSocket server
+          const data = {
+            speechResult: speechResult
+          };
+          ws.send(JSON.stringify(data));
+        };
+
+        recognition.onerror = function(event) {
+          console.error("Speech recognition error", event.error);
+        };
+
+        // Start speech recognition
+        recognition.start();
+      }
+
+      function stopListening() {
+        if (recognition) {
+          // Stop speech recognition
+          recognition.stop();
+          console.log("Speech recognition stopped");
+        }
+      }
+    </script>
+  </body>
+</html>
