@@ -521,7 +521,11 @@
           scoreThreshold: 0.5,
         });
 
-        const landmarkOptions = { lineWidth: 2, drawLines: true, color: "red" };
+        const landmarkOptions = {
+          lineWidth: 2,
+          drawLines: true,
+          color: "green",
+        };
 
         async function detectAndDraw() {
           const detections = await faceapi
