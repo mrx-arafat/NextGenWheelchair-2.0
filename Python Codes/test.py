@@ -3,7 +3,7 @@ import json
 
 # Connect to WebSocket server
 ws = websocket.WebSocket()
-ws.connect("ws://192.168.0.201:81")
+ws.connect("ws://192.168.1.201:81")
 print("Connected to WebSocket server")
 
 try:
