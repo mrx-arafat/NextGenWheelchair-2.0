@@ -348,7 +348,7 @@
           }
           
           .mic.clicked {
-            animation: pulse 0.5s infinite;
+            animation: pulse 0.7s infinite;
           }
           
           @keyframes pulse {
@@ -368,49 +368,75 @@
           const mic = document.querySelector('.mic');
           const recognizedSpeech = document.querySelector('.recognized-speech');
           const direction = document.querySelector('.direction');
-
-          mic.addEventListener('click', startRecognition);
-
+          let isListening = false; // Flag to track if speech recognition is active
+        
+          mic.addEventListener('click', toggleRecognition);
+        
+          function toggleRecognition() {
+            if (!isListening) {
+              startRecognition();
+            } else {
+              stopRecognition();
+            }
+          }
+        
           function startRecognition() {
-              mic.classList.add('clicked');
-
-              // check if the browser supports Web Speech API
-              if ('webkitSpeechRecognition' in window) {
+            mic.classList.add('clicked');
+        
+            // check if the browser supports Web Speech API
+            if ('webkitSpeechRecognition' in window) {
               // get user's speech input
               const recognition = new webkitSpeechRecognition();
               recognition.lang = 'en-US';
-
-              recognition.onresult = function(event) {
-              const speechResult = event.results[0][0].transcript.toLowerCase();
-              recognizedSpeech.textContent = `"${speechResult}"`;
-              mic.classList.remove('clicked');
-
-              // determine the direction based on user's speech input
-              if (speechResult === 'move right.') {
-                direction.src = 'images/arrow-right.png';
-              } else if (speechResult === 'move left.') {
-                direction.src = 'images/arrow-left.png';
-              } else if (speechResult === 'move front.') {
-                direction.src = 'images/arrow-up.png';
-              } else if (speechResult === 'move back.') {
-                direction.src = 'images/arrow-down.png';
-              } else {
-                console.log('Invalid input. Please say "Right", "Left", "Front", or "Back".');
-                //alert('Invalid input. Please say "Right", "Left", "Front", or "Back".');
-              return;
-      }
-
-            // show the image
-            direction.style.display = 'block';
-      };
-
-            recognition.start();
-      } else {
-            alert('Sorry, your browser doesn\'t support speech recognition. Try using Google Chrome or Microsoft Edge.');
-      }
-  }
-
+        
+              recognition.onstart = function () {
+                isListening = true;
+              };
+        
+              recognition.onresult = function (event) {
+                const speechResult = event.results[0][0].transcript.toLowerCase();
+                recognizedSpeech.textContent = `"${speechResult}"`;
+        
+                // determine the direction based on user's speech input
+                if (speechResult === 'move right.') {
+                  direction.src = 'images/arrow-right.png';
+                } else if (speechResult === 'move left.') {
+                  direction.src = 'images/arrow-left.png';
+                } else if (speechResult === 'move front.') {
+                  direction.src = 'images/arrow-up.png';
+                } else if (speechResult === 'move back.') {
+                  direction.src = 'images/arrow-down.png';
+                }
+        
+                if (speechResult === 'stop.') {
+                  console.log('Recognition stopped.');
+                  stopRecognition();
+                } else {
+                  // show the image
+                  direction.style.display = 'block';
+                }
+              };
+        
+              recognition.onend = function () {
+                isListening = false;
+                mic.classList.remove('clicked');
+              };
+        
+              recognition.start();
+            } else {
+              alert('Sorry, your browser doesn\'t support speech recognition. Try using Google Chrome or Microsoft Edge.');
+            }
+          }
+        
+          function stopRecognition() {
+            if ('webkitSpeechRecognition' in window) {
+              const recognition = new webkitSpeechRecognition();
+              recognition.stop();
+            }
+          }
         </script>
+        
+        
         
         <!-- #/ container -->
       </div>

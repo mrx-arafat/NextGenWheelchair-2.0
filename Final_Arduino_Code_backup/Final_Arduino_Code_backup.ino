@@ -15,8 +15,8 @@ const int servo2 = 4;
 /* Wifi Starts */
 Servo myservo1, myservo2;
 
-const char* ssid = "Goribs";
-const char* password = "agetakade";
+const char* ssid = "The King BOB";
+const char* password = "TheKingBOB69";
 
 WebSocketsServer webSocket(81);
 
@@ -287,8 +287,9 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t* payload, size_t length)
     }
     else if(doc.containsKey("direction")) {
       String direction = doc["direction"].as<String>();
-      // Serial.println(direction);
+      Serial.println(direction);
       if(direction == "Left") {
+
         myservo1.write(90);
         myservo2.write(130);
       }
