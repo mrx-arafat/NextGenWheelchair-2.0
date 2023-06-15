@@ -447,15 +447,14 @@
         Scripts
     ***********************************-->
     <script>
-
-			const ws = new WebSocket("ws://192.168.0.201:81");
+      const ws = new WebSocket("ws://192.168.0.101:81");
       console.log("Connected to WebSocket server");
 
-			ws.onopen = function() {
+      ws.onopen = function () {
         console.log("WebSocket connection established");
       };
 
-      ws.onmessage = function(event) {
+      ws.onmessage = function (event) {
         console.log("Received: " + event.data);
       };
 
@@ -574,13 +573,12 @@
         const motionAngleElement = document.getElementById("motionAngle");
         motionDirectionElement.textContent = `Motion Direction: ${direction}`;
         motionAngleElement.textContent = `Motion Angle: ${angle.toFixed(2)}°`;
-				const data = {
+        const data = {
           direction: direction,
-					angle: angle.toFixed(2)
+          angle: angle.toFixed(2),
         };
-				ws.send(JSON.stringify(data));
+        ws.send(JSON.stringify(data));
       }
-
     </script>
 
     <script src="plugins/common/common.min.js"></script>
