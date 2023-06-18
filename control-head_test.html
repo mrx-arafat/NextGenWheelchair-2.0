@@ -447,7 +447,7 @@
         Scripts
     ***********************************-->
     <script>
-      const ws = new WebSocket("ws://192.168.0.101:81");
+      const ws = new WebSocket("ws://192.168.0.102:81");
       console.log("Connected to WebSocket server");
 
       ws.onopen = function () {
@@ -559,7 +559,7 @@
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
           return deltaX > 0 ? "Left" : "Right";
         } else {
-          return deltaY > 0 ? "Forward" : "Back";
+          return deltaY > 0 ? "Down" : "Up";
         }
       }
 
