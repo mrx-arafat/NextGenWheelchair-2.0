@@ -14,7 +14,7 @@
       sizes="16x16"
       href="../../assets/images/favicon.png"
     />
-    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
+
     <link href="css/style.css" rel="stylesheet" />
   </head>
 
@@ -67,18 +67,19 @@
                         placeholder="Password"
                       />
                     </div>
-                    <a
-                      href="blank.html"
+                    <button
+                      type="submit"
                       class="btn login-form__btn submit w-100"
                     >
-                      <!-- <button class="btn login-form__btn submit w-100"> -->
                       Sign In
-                      <!-- </button> -->
-                    </a>
+                    </button>
                   </form>
                   <p class="mt-5 login-form__footer">
                     Dont have account?
-                    <a href="page-register.html" class="text-primary">Sign Up</a> now
+                    <a href="page-register.html" class="text-primary"
+                      >Sign Up</a
+                    >
+                    now
                   </p>
                 </div>
               </div>
@@ -91,8 +92,36 @@
     <!--**********************************
         Scripts
     ***********************************-->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var form = document.getElementsByClassName("login-input")[0];
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          var username = document.querySelector('input[type="text"]').value;
+          var password = document.querySelector('input[type="password"]').value;
+
+          // Check if username and password are correct
+          if (username === "ngwc" && password === "ngwc1234") {
+            // Use SweetAlert2 for stylish alert
+            Swal.fire("Success!", "Logged in successfully", "success").then(
+              () => {
+                window.location.href = "blank.html";
+              }
+            );
+          } else {
+            // Use SweetAlert2 for stylish alert
+            Swal.fire("Oops...", "Bad credentials");
+          }
+        });
+      });
+    </script>
+
     <script src="plugins/common/common.min.js"></script>
     <script src="js/custom.min.js"></script>
+
     <script src="js/settings.js"></script>
     <script src="js/gleek.js"></script>
     <script src="js/styleSwitcher.js"></script>
