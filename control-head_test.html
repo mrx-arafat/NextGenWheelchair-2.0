@@ -554,7 +554,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         previousPosition = null;
       }
-
+      console.log(deltaX + " " +  deltaY);
       function getMotionDirection(deltaX, deltaY) {
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
           return deltaX > 0 ? "Left" : "Right";
