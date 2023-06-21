@@ -367,54 +367,69 @@
     ***********************************-->
     <!-- voice scr -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const outputText = document.getElementById("outputText");
-        const startButton = document.getElementById("startButton");
+      const ws = new WebSocket("ws://192.168.1.201:81");
+      console.log("Connected to WebSocket server");
+      ws.onopen = function () {
+        console.log("WebSocket connection established");
+      };
 
-        if (annyang) {
-          // Define a command to be executed when the user speaks
-          const commands = {
-            "*text": function (text) {
-              outputText.value += text.toLowerCase() + " ";
-            },
-            "move right": function () {
-              // Code to move car right
-            },
-            "move left": function () {
-              // Code to move car left
-            },
-            "move front": function () {
-              // Code to move car forward
-            },
-            "move back": function () {
-              // Code to move car backward
-            },
-          };
+      const startBtn = document.getElementById("startBtn");
+      const resultDiv = document.getElementById("result");
 
-          // Add commands to annyang
-          annyang.addCommands(commands);
+      let recognition;
 
-          // Function to handle button state change
-          function toggleButtonState() {
-            if (startButton.textContent === "Start Listening") {
-              annyang.start();
-              startButton.textContent = "Stop Listening";
-            } else {
-              annyang.abort();
-              startButton.textContent = "Start Listening";
-              outputText.value = ""; // Clear the text in the outputText element
-            }
-          }
-
-          // Add click event listener to the startButton
-          startButton.addEventListener("click", toggleButtonState);
-        } else {
-          outputText.textContent =
-            "Your browser does not support the annyang library.";
-        }
+      startBtn.addEventListener("click", () => {
+        startRecognition();
       });
-    </script>
 
+      function startRecognition() {
+        const SpeechRecognition =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+
+        // Enable noise suppression
+        if (
+          typeof recognition.hasOwnProperty("noiseSuppression") !== "undefined"
+        ) {
+          recognition.noiseSuppression = "auto";
+        }
+
+        recognition.lang = "en-US";
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 1; // Set the maximum number of alternatives to 1
+
+        recognition.onstart = () => {
+          resultDiv.textContent = "Listening...";
+        };
+
+        // recognition.onresult = (event) => {
+        //   let transcript = event.results[event.results.length - 1][0].transcript; // Get the last transcript only
+        //   resultDiv.textContent = `You said: ${transcript}`;
+        // };
+        recognition.onresult = (event) => {
+          let transcript =
+            event.results[event.results.length - 1][0].transcript;
+          let words = transcript.split(" ");
+          let lastWord = words[words.length - 1];
+          resultDiv.textContent = `You said: ${lastWord}`;
+          const data = {
+            speechResult: lastWord,
+          };
+          ws.send(JSON.stringify(data));
+        };
+
+        recognition.onend = () => {
+          resultDiv.textContent += " (Speech recognition ended)";
+        };
+
+        recognition.onerror = (event) => {
+          console.error(event.error);
+        };
+
+        recognition.start();
+      }
+    </script>
     <script src="plugins/common/common.min.js"></script>
     <script src="js/custom.min.js"></script>
     <script src="js/settings.js"></script>
