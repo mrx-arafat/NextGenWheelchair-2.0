@@ -448,7 +448,7 @@
     ***********************************-->
 
     <script>
-      const ws = new WebSocket("ws://192.168.0.102:81");
+      const ws = new WebSocket("ws://192.168.1.101:81");
       console.log("Connected to WebSocket server");
 
       ws.onopen = function () {
@@ -555,7 +555,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         previousPosition = null;
       }
-
+      console.log(deltaX + " " +  deltaY);
       function getMotionDirection(deltaX, deltaY) {
         console.log(deltaX + " " + deltaY);
         if (Math.abs(deltaX) > Math.abs(deltaY)) {

@@ -23,8 +23,8 @@ blink2 = 0
 
 while True:
 
-    if cap.get(cv2.CAP_PROP_POS_FRAMES) == cap.get(cv2.CAP_PROP_FRAME_COUNT):
-        cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+    # if cap.get(cv2.CAP_PROP_POS_FRAMES) == cap.get(cv2.CAP_PROP_FRAME_COUNT):
+    #     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
     success, img = cap.read()
     img = cv2.flip(img, 1)
@@ -105,8 +105,8 @@ while True:
 
     cv2.imshow("Image", imgStack)
     # cv2.imshow("Image", img)
-    cv2.waitKey(10)
+    key = cv2.waitKey(1)
     
-    if cv2.waitKey(1) == ord('q'):
+    if key == 27:
         cv2.destroyAllWindows()
         break
