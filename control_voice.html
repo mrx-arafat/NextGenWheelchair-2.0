@@ -32,7 +32,37 @@
     <!-- Custom Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
   </head>
+  <style>
+    .vc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
 
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+  </style>
   <body>
     <!--*******************
         Preloader start
@@ -298,29 +328,15 @@
             </div>
           </div>
         </div>
-        <div class="container-fluid mt-3">
-          <div class="container mt-5">
-            <h1 class="text-center">Voice to Text</h1>
-            <div class="row mt-4">
-              <div class="col text-center">
-                <button id="startButton" class="btn btn-primary">
-                  Start Listening
-                </button>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col text-center">
-                <textarea
-                  id="outputText"
-                  class="form-control"
-                  rows="6"
-                  placeholder="Text will appear here..."
-                ></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
+
         <!-- #/ container -->
+
+        <div class="vc">
+          <h1>Speech Recognition</h1>
+          <p>Click the button and start speaking.</p>
+          <button id="startBtn">Start</button>
+          <div id="result"></div>
+        </div>
       </div>
 
       <!--**********************************
@@ -380,14 +396,14 @@
 
           // Function to handle button state change
           function toggleButtonState() {
-              if (startButton.textContent === "Start Listening") {
-                annyang.start();
-                startButton.textContent = "Stop Listening";
-              } else {
-                annyang.abort();
-                startButton.textContent = "Start Listening";
-                outputText.value = ""; // Clear the text in the outputText element
-              }
+            if (startButton.textContent === "Start Listening") {
+              annyang.start();
+              startButton.textContent = "Stop Listening";
+            } else {
+              annyang.abort();
+              startButton.textContent = "Start Listening";
+              outputText.value = ""; // Clear the text in the outputText element
+            }
           }
 
           // Add click event listener to the startButton
