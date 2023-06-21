@@ -1,0 +1,189 @@
+                    <div class="container mt-5">
+                        <div class="row">
+                          <div class="col-md-12 text-center">
+                            <h1>Real-time Feedback with Head Motion</h1>
+                            <div class="card">
+                              <div class="card-body position-relative">
+                                <video
+                                  id="webcam"
+                                  width="640"
+                                  height="480"
+                                  autoplay
+                                  muted
+                                ></video>
+
+                                <canvas
+                                  id="overlay"
+                                  width="640"
+                                  height="480"
+                                ></canvas>
+                              </div>
+                            </div>
+                            <div class="mt-3">
+                              <button id="startWebcam" class="btn btn-primary">
+                                Start Webcam
+                              </button>
+                              <button
+                                id="pauseResume"
+                                class="btn btn-secondary"
+                              >
+                                Pause
+                              </button>
+                            </div>
+
+                            <!-- info -->
+
+                            <div class="card mt-3">
+                              <div class="card-body">
+                                <h5 class="card-title">
+                                  Head Motion Information
+                                </h5>
+                                <p id="motionDirection" class="card-text">
+                                  Motion Direction: N/A
+                                </p>
+                                <p id="motionAngle" class="card-text">
+                                  Motion Angle: N/A
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- webcam end -->
+
+script
+
+<script>
+      const ws = new WebSocket("ws://192.168.0.102:81");
+      console.log("Connected to WebSocket server");
+
+      ws.onopen = function () {
+        console.log("WebSocket connection established");
+      };
+
+      ws.onmessage = function (event) {
+        console.log("Received: " + event.data);
+      };
+
+      const startWebcamBtn = document.getElementById("startWebcam");
+      const pauseResumeBtn = document.getElementById("pauseResume");
+      const videoElement = document.getElementById("webcam");
+
+      async function startWebcam() {
+        try {
+          const constraints = { video: { facingMode: "user" } };
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          videoElement.srcObject = stream;
+          videoElement.play();
+          startWebcamBtn.textContent = "Stop Webcam";
+          startWebcamBtn.onclick = stopWebcam;
+          startTracking();
+        } catch (err) {
+          console.error("Error accessing webcam:", err);
+        }
+      }
+
+      function stopWebcam() {
+        const stream = videoElement.srcObject;
+        if (stream) {
+          const tracks = stream.getTracks();
+          tracks.forEach((track) => track.stop());
+          videoElement.srcObject = null;
+        }
+        startWebcamBtn.textContent = "Start Webcam";
+        startWebcamBtn.onclick = startWebcam;
+        stopTracking();
+      }
+
+      function pauseResume() {
+        if (videoElement.paused) {
+          videoElement.play();
+          pauseResumeBtn.textContent = "Pause";
+        } else {
+          videoElement.pause();
+          pauseResumeBtn.textContent = "Resume";
+        }
+      }
+
+      startWebcamBtn.addEventListener("click", startWebcam);
+      pauseResumeBtn.addEventListener("click", pauseResume);
+
+      let previousPosition;
+
+      async function startTracking() {
+        await faceapi.nets.tinyFaceDetector.loadFromUri("./models");
+        await faceapi.nets.faceLandmark68TinyNet.loadFromUri("./models");
+
+        const faceDetectionOptions = new faceapi.TinyFaceDetectorOptions({
+          inputSize: 224,
+          scoreThreshold: 0.5,
+        });
+
+        const landmarkOptions = { lineWidth: 2, drawLines: true, color: "red" };
+
+        async function detectAndDraw() {
+          const detections = await faceapi
+            .detectAllFaces(videoElement, faceDetectionOptions)
+            .withFaceLandmarks(true);
+
+          const canvas = document.getElementById("overlay");
+          const context = canvas.getContext("2d");
+          context.clearRect(0, 0, canvas.width, canvas.height);
+
+          faceapi.draw.drawFaceLandmarks(canvas, detections, landmarkOptions);
+
+          if (detections && detections.length > 0 && detections[0].landmarks) {
+            const currentPosition = detections[0].landmarks.positions[33];
+
+            if (previousPosition) {
+              const deltaX = currentPosition.x - previousPosition.x;
+              const deltaY = currentPosition.y - previousPosition.y;
+              const motion = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+              if (motion > 10) {
+                const direction = getMotionDirection(deltaX, deltaY);
+                const angle = getMotionAngle(deltaX, deltaY);
+                updateMotionInfo(direction, angle);
+              }
+            }
+            previousPosition = currentPosition;
+          }
+
+          setTimeout(detectAndDraw, 100); // Update every (1 second)
+        }
+
+        detectAndDraw();
+      }
+
+      function stopTracking() {
+        const canvas = document.getElementById("overlay");
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        previousPosition = null;
+      }
+
+      function getMotionDirection(deltaX, deltaY) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          return deltaX > 0 ? "Left" : "Right";
+        } else {
+          return deltaY > 0 ? "Down" : "Up";
+        }
+      }
+
+      function getMotionAngle(deltaX, deltaY) {
+        return (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
+      }
+
+      function updateMotionInfo(direction, angle) {
+        const motionDirectionElement =
+          document.getElementById("motionDirection");
+        const motionAngleElement = document.getElementById("motionAngle");
+        motionDirectionElement.textContent = `Motion Direction: ${direction}`;
+        motionAngleElement.textContent = `Motion Angle: ${angle.toFixed(2)}°`;
+        const data = {
+          direction: direction,
+          angle: angle.toFixed(2),
+        };
+        ws.send(JSON.stringify(data));
+      }
+    </script>
