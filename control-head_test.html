@@ -384,7 +384,7 @@
                           </div>
                         </div>
                       </div>
-                      <!-- end -->
+                      <!-- webcam end -->
                     </div>
                   </div>
                 </div>
@@ -446,6 +446,7 @@
     <!--**********************************
         Scripts
     ***********************************-->
+
     <script>
       const ws = new WebSocket("ws://192.168.1.101:81");
       console.log("Connected to WebSocket server");
@@ -554,7 +555,7 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         previousPosition = null;
       }
-
+      console.log(deltaX + " " +  deltaY);
       function getMotionDirection(deltaX, deltaY) {
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
           return deltaX > 0 ? "Left" : "Right";
