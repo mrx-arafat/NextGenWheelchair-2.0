@@ -12,7 +12,7 @@ try:
         result = ws.recv()
         print("Received: " + result)
         data = json.loads(result)
-        if "degree" in data:
+        if "degree" in data: 
             x = data["x"]
             y = data["y"]
             degree = data["degree"]
