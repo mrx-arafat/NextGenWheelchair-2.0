@@ -46,7 +46,19 @@ void loop() {
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t* payload, size_t length) {
   if (type == WStype_TEXT) {
     // Handle the received message
-    String message = String((char*)payload);
-    Serial.println("Received message: " + message);
+    StaticJsonDocument<200>doc;
+    deserializeJson(doc,payload);
+
+    if(doc.containsKey("status"))
+    {
+      String message = doc["status"].as<String>();
+      Serial.print("Recieved Message: ");
+      Serial.println(message);
+    }
+
+
+
+    //String message = String((char*)payload);
+    //Serial.println("Received message: " + message);
   }
 }

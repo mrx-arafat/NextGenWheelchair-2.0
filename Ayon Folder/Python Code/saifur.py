@@ -1,6 +1,7 @@
 import cv2
 import dlib
 import websocket
+import json
  
 # Set up the WebSocket connection
 ws = websocket.WebSocket()
@@ -47,23 +48,23 @@ while True:
         middle2nd = (face_landmarks.part(8).x, face_landmarks.part(8).y)
         dis4 = (middle1st[0]-middle2nd[0])*(middle1st[0]-middle2nd[0]) + (middle1st[1]-middle2nd[1])*(middle1st[1]-middle2nd[1])
 
-        data = 'normal'
+        data = {"status":"normal"}
 
         if(dis1 > 4500):
-            data = 'left'
+            data = {"status":"left"}
         elif dis2 > 4500:
-            data = 'right'
+            data = {"status":"right"}
         elif dis3 > 1250:
-            data = 'up'
+            data = {"status":"up"}
         elif dis4 < 7000:
-            data = 'down'
+            data = {"status":"down"}
         # else:
         #     data = {"status": "normal"}
  
         # Send the data as JSON to the WebSocket server
         # ws.send(json.dumps(data))
         # print(f"{data}")
-        ws.send(data)
+        ws.send(json.dumps(data))
  
         for n in range(0, 68):
  
