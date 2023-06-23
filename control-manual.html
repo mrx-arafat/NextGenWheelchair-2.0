@@ -383,6 +383,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nipplejs/0.8.0/nipplejs.min.js"></script>
     <script>
       // Create a WebSocket connection to the ESP32
+      document.onkeydown = function (e) {
+        console.log('key down');
+        console.log(e);
+      };
       const websocket = new WebSocket("ws://192.168.1.201:81");
 
       // Add an event listener for WebSocket messages.
@@ -418,6 +422,14 @@
         });
 
         manager.on("end", function () {
+          const commandData = {
+            x: 0,
+            y: 0,
+            degree: 0,
+            force: 0,
+          };
+          let commandJson = JSON.stringify(commandData);
+          websocket.send(commandJson);
           // output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
           joystickIsActive = false; // Joystick is not active
         });
@@ -431,11 +443,11 @@
           const mappedX = mapValue(x, -1, 1, 0, 4095);
           const mappedY = mapValue(y, -1, 1, 0, 4095);
 
-          output.innerHTML = `X: ${mappedX.toFixed(0)}, Y: ${mappedY.toFixed(
-            0
-          )}, Degree: ${data.angle.degree.toFixed(
-            2
-          )}, Force: ${data.force.toFixed(2)}`;
+          // output.innerHTML = `X: ${mappedX.toFixed(0)}, Y: ${mappedY.toFixed(
+          //   0
+          // )}, Degree: ${data.angle.degree.toFixed(
+          //   2
+          // )}, Force: ${data.force.toFixed(2)}`;
 
           // Create a JSON object with the mapped x, y, degree, and force
           const commandData = {
@@ -455,36 +467,36 @@
         }
 
         // Add keyboard support
-        document.addEventListener("keydown", (e) => {
-          let degree = null;
-          if (e.key === "ArrowUp") {
-            degree = 90;
-          } else if (e.key === "ArrowDown") {
-            degree = 270;
-          } else if (e.key === "ArrowLeft") {
-            degree = 180;
-          } else if (e.key === "ArrowRight") {
-            degree = 0;
-          }
-          if (degree !== null) {
-            const data = {
-              angle: {
-                degree: degree,
-              },
-              force: 1, // Set a default force value for keyboard events
-            };
-            displayCommand(data);
-          }
-        });
+        // document.addEventListener("keydown", (e) => {
+        //   let degree = null;
+        //   if (e.key === "ArrowUp") {
+        //     degree = 90;
+        //   } else if (e.key === "ArrowDown") {
+        //     degree = 270;
+        //   } else if (e.key === "ArrowLeft") {
+        //     degree = 180;
+        //   } else if (e.key === "ArrowRight") {
+        //     degree = 0;
+        //   }
+        //   if (degree !== null) {
+        //     const data = {
+        //       angle: {
+        //         degree: degree,
+        //       },
+        //       force: 1, // Set a default force value for keyboard events
+        //     };
+        //     displayCommand(data);
+        //   }
+        // });
 
-        document.addEventListener("keyup", (e) => {
-          if (
-            ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
-          ) {
-            output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
-            joystickIsActive = false; // Joystick is not active
-          }
-        });
+        // document.addEventListener("keyup", (e) => {
+        //   if (
+        //     ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
+        //   ) {
+        //     // output.innerHTML = "X: 0, Y: 0, Degree: 0.00, Force: 0.00";
+        //     joystickIsActive = false; // Joystick is not active
+        //   }
+        // });
 
         setInterval(function () {
           if (joystickIsActive && activeJoystickData) {
