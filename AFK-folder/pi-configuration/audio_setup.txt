@@ -1,0 +1,55 @@
+## editor name: mousepad
+
+## Enabling C-media audio adapter on Raspberry Pi
+https://exdev.sourceforge.io/raspberrypi/enabling_cmedia_audio_adapter.html
+Add the following lines (this line will load a linux kernel module called 'snd_usb_audio' that will enable kernel to auto-load audio device drivers over usb ports).
+
+netto@bella:~$ sudo nano /etc/modules
+# c-media headset
+snd_usb_audio
+
+After this configuration, C-media adapters should be recognised on your raspbian (and, of course, you can always modprobe the driver).
+Now, we need to set the C-media driver as the primary audio device on ALSA, otherwise, the input/output will always flow through raspberry pi built-in hardware.
+
+Add the following line to force ALSA to set C-media driver as the primary audio device.
+
+netto@bella:~$ sudo nano /etc/modprobe.d/alsa-base.conf
+options snd-usb-audio index=0
+
+Finally, a reboot is required.
+
+## AssemblyAI
+
+# Install PyAudio
+sudo apt install libportaudio0 libportaudio2 libportaudiocpp0 portaudio19-dev flac
+pip install pyaudio requests websockets
+
+# Configure USB Mic
+$ lsusb
+$ arecord -l
+$ cat /proc/asound/cards
+$ cat /proc/asound/modules
+
+Set the default card in:
+
+$ sudo nano /usr/share/alsa/alsa.conf
+E.g. for card 2:
+
+defaults.ctl.card 2
+defaults.pcm.card 2
+Save the file and reboot:
+
+$ sudo reboot
+
+# Test sound recording
+Test sound recording
+$ arecord -d 5 -r 48000 test.wav
+$ aplay test.wav
+
+# Test PyAudio Code
+import pyaudio
+p = pyaudio.PyAudio()
+
+for i in range(p.get_device_count()):
+    print(p.get_device_info_by_index(i).get('name'))
+
