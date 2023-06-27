@@ -369,22 +369,12 @@
                             <!-- info -->
 
                             <div class="card mt-3">
-                              <div class="card-body">
-                                <h5 class="card-title">
-                                  Head Motion Information
-                                </h5>
-                                <p id="motionDirection" class="card-text">
-                                  Motion Direction: N/A
-                                </p>
-                                <p id="motionAngle" class="card-text">
-                                  Motion Angle: N/A
-                                </p>
-                              </div>
+                              
                             </div>
                           </div>
                         </div>
                       </div>
-                      <!-- end -->
+                      <!-- webcam end -->
                     </div>
                   </div>
                 </div>
@@ -392,25 +382,16 @@
                   <div class="col-xl-12">
                     <div class="card">
                       <div class="card-body">
-                        <h2 class="card-title">More Optimized Model</h2>
-                        <div>
-                          <div class="progress mb-3" style="height: 25px">
-                            <div
-                              class="progress-bar bg-success"
-                              style="width: 85%"
-                              role="progressbar"
-                            >
-                              88%
-                            </div>
-                          </div>
-                          <a href="head-motion-final.html" class="btn btn-primary btn-lg active mt-3" role="button" aria-pressed="true">Proceed to Head Motion Final</a>
-                        </div>
-                        </div>
-
-                        <div>
-                          <!-- <img src="images/arrow-right-active.png" alt="" /> -->
-                        </div>
-                      </div>
+                        <h5 class="card-title">
+                          Head Motion Information
+                        </h5>
+                        <p id="motionDirection" class="card-text">
+                          Motion Direction: N/A
+                        </p>
+                        <p id="motionAngle" class="card-text">
+                          Motion Angle: N/A
+                        </p>
+                      </div>0
                     </div>
                   </div>
                 </div>
@@ -447,25 +428,17 @@
     <!--**********************************
         Scripts
     ***********************************-->
+
     <script>
-      // Create a WebSocket connection to the ESP32
-      const websocket = new WebSocket("ws://192.168.0.201:81");
+      const ws = new WebSocket("ws://192.168.1.201:81");
+      console.log("Connected to WebSocket server");
 
-      // Add an event listener for WebSocket messages.
-      websocket.onmessage = function (event) {
-        document.getElementById("serverData").innerText = event.data;
+      ws.onopen = function () {
+        console.log("WebSocket connection established");
       };
 
-      websocket.onerror = function (error) {
-        console.error("WebSocket Error: ", error);
-      };
-
-      websocket.onopen = function (event) {
-        console.log("WebSocket is connected.");
-      };
-
-      websocket.onclose = function (event) {
-        console.log("WebSocket is closed.");
+      ws.onmessage = function (event) {
+        console.log("Received: " + event.data);
       };
 
       const startWebcamBtn = document.getElementById("startWebcam");
@@ -522,11 +495,7 @@
           scoreThreshold: 0.5,
         });
 
-        const landmarkOptions = {
-          lineWidth: 2,
-          drawLines: true,
-          color: "green",
-        };
+        const landmarkOptions = { lineWidth: 2, drawLines: true, color: "red" };
 
         async function detectAndDraw() {
           const detections = await faceapi
@@ -556,7 +525,7 @@
             previousPosition = currentPosition;
           }
 
-          setTimeout(detectAndDraw, 100); // Update every 1 second
+          setTimeout(detectAndDraw, 100); // Update every (1 second)
         }
 
         detectAndDraw();
@@ -568,12 +537,24 @@
         context.clearRect(0, 0, canvas.width, canvas.height);
         previousPosition = null;
       }
-
+      console.log(deltaX + " " + deltaY);
       function getMotionDirection(deltaX, deltaY) {
+        console.log(deltaX + " " + deltaY);
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
-          return deltaX > 0 ? "Left" : "Right";
+          if (Math.abs(deltaX) > 15) {
+            return deltaX > 0 ? "left" : "right";
+          } else {
+            return "normal";
+          }
+          // return deltaX > 0 ? "Left" : "Right";
         } else {
-          return deltaY > 0 ? "Down" : "Up";
+          if (Math.abs(deltaY) > 15) {
+            return deltaY > 0 ? "forward" : "back";
+          } else {
+            return "normal";
+          }
+
+          // return deltaY > 0 ? "Down" : "Up";
         }
       }
 
@@ -587,16 +568,12 @@
         const motionAngleElement = document.getElementById("motionAngle");
         motionDirectionElement.textContent = `Motion Direction: ${direction}`;
         motionAngleElement.textContent = `Motion Angle: ${angle.toFixed(2)}°`;
-
-        // Send motion data to the ESP32
-        const motionData = {
-          motionDirection: direction,
-          motionAngle: angle.toFixed(2),
+        const data = {
+          direction: direction,
+          angle: angle.toFixed(2),
         };
-
-        console.log("Sending motion data to ESP32:", motionData);
-
-        websocket.send(JSON.stringify(motionData));
+        console.log(direction);
+        ws.send(JSON.stringify(data));
       }
     </script>
 

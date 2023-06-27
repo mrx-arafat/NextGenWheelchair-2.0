@@ -5,7 +5,7 @@ import json
  
 # Set up the WebSocket connection
 ws = websocket.WebSocket()
-ws.connect("ws://192.168.1.204:81")  # Replace with your WebSocket server URL
+ws.connect("ws://192.168.1.201:81")  # Replace with your WebSocket server URL
 print("Connected to WebSocket server")
 
  
